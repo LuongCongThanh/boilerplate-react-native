@@ -1,95 +1,82 @@
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig
-} from 'axios'
-import {
-  withVersioning,
-  VersioningStrategy,
-  IWithVersioningConfig
-} from 'axios-api-versioning'
+import axios, {AxiosRequestConfig, AxiosResponse} from 'axios'
+import {withVersioning, VersioningStrategy} from 'axios-api-versioning'
 
-export interface Interceptor<V> {
-  onFulfilled?: (value: V) => V | Promise<V>
-  onRejected?: (error: unknown) => unknown
+export interface IHttpClient {
+  get<T = unknown>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>
+  post<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>
+  put<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>
+  patch<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>
+  delete<T = unknown>(
+    url: string,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>>
 }
 
-export default class Http {
-  private instance: AxiosInstance
+export interface HttpClientConfig {
+  baseURL: string
+  apiVersion?: string
+  getToken?: () => string | null | undefined
+  onUnauthorized?: () => void
+}
 
-  constructor() {
-    this.instance = axios.create({
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      }
-    })
+export function createHttpClient(config: HttpClientConfig): IHttpClient {
+  const {baseURL, apiVersion = '1', getToken, onUnauthorized} = config
 
-    this.setVersioning()
-  }
-
-  addRequestInterceptor(interceptor: Interceptor<InternalAxiosRequestConfig>) {
-    this.instance.interceptors.request.use(
-      interceptor?.onFulfilled,
-      interceptor?.onRejected
-    )
-  }
-
-  addResponseInterceptor(interceptor: Interceptor<AxiosResponse>) {
-    this.instance.interceptors.response.use(
-      interceptor?.onFulfilled,
-      interceptor?.onRejected
-    )
-  }
-
-  setVersioning(
-    config: IWithVersioningConfig = {
-      apiVersion: '1',
-      versioningStrategy: VersioningStrategy.UrlPath
+  let instance = axios.create({
+    baseURL,
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
     }
-  ) {
-    this.instance = withVersioning(
-      this.instance,
-      config
-    ) as unknown as AxiosInstance
-  }
+  })
 
-  get<T = unknown, R = AxiosResponse<T>>(
-    url: string,
-    config?: AxiosRequestConfig
-  ): Promise<R> {
-    return this.instance.get(url, config)
-  }
+  instance = withVersioning(instance, {
+    apiVersion,
+    versioningStrategy: VersioningStrategy.UrlPath
+  }) as unknown as typeof instance
 
-  post<T = unknown, R = AxiosResponse<T>>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig
-  ): Promise<R> {
-    return this.instance.post(url, data, config)
-  }
+  instance.interceptors.request.use((requestConfig) => {
+    const token = getToken?.()
+    if (token) {
+      requestConfig.headers.Authorization = `Bearer ${token}`
+    }
+    return requestConfig
+  })
 
-  put<T = unknown, R = AxiosResponse<T>>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig
-  ): Promise<R> {
-    return this.instance.put(url, data, config)
-  }
+  instance.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.status === 401 &&
+        onUnauthorized
+      ) {
+        onUnauthorized()
+      }
+      return Promise.reject(error)
+    }
+  )
 
-  patch<T = unknown, R = AxiosResponse<T>>(
-    url: string,
-    data?: unknown,
-    config?: AxiosRequestConfig
-  ): Promise<R> {
-    return this.instance.patch(url, data, config)
-  }
-
-  delete<T = unknown, R = AxiosResponse<T>>(
-    url: string,
-    config?: AxiosRequestConfig
-  ): Promise<R> {
-    return this.instance.delete(url, config)
+  return {
+    get: (url, reqConfig) => instance.get(url, reqConfig),
+    post: (url, data, reqConfig) => instance.post(url, data, reqConfig),
+    put: (url, data, reqConfig) => instance.put(url, data, reqConfig),
+    patch: (url, data, reqConfig) => instance.patch(url, data, reqConfig),
+    delete: (url, reqConfig) => instance.delete(url, reqConfig)
   }
 }
