@@ -9,8 +9,6 @@ import {
 
 export type Props = {
   containerStyle?: ViewStyle
-  margin?: string
-  padding?: string
   prefix?: React.ReactNode
   suffix?: React.ReactNode
 } & TextInputProps

@@ -8,6 +8,7 @@ import {
   signUpValidationSchema,
   SignUpFormValues
 } from 'src/modules/auth/constants/validator'
+import {sizeScale} from 'src/styles'
 
 const SignUpForm = () => {
   const {t} = useTranslation()
@@ -46,7 +47,7 @@ const SignUpForm = () => {
         autoCapitalize="none"
       />
       <RoundButton
-        margin="20, 0, 0, 0"
+        style={{marginTop: sizeScale(20)}}
         text={t('auth.signUp.content')}
         onPress={() => methods.handleSubmit(handleSignUp)()}
       />

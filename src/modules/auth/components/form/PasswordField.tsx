@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useState} from 'react'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 
 import IconButton from 'src/components/core/IconButton'
 import InputField, {Props as InputFieldProps} from './InputField'
@@ -21,7 +21,11 @@ const PasswordField: FC<Props> = ({placeholder, name, iconName, ...rest}) => {
     <InputField
       suffix={
         <IconButton
-          padding="10, 0, 10, 10"
+          style={{
+            paddingTop: sizeScale(10),
+            paddingBottom: sizeScale(10),
+            paddingLeft: sizeScale(10)
+          }}
           name={showPassword ? 'eye-off' : 'eye'}
           color={COLORS.lightGray}
           size={18}

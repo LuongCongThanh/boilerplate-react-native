@@ -22,7 +22,7 @@ const SettingItem = ({
   ...rest
 }: Props) => {
   return (
-    <Button margin="0,24" style={styles.cardContainer} {...rest}>
+    <Button style={styles.cardContainer} {...rest}>
       {leftIcon ?? (
         <Icon name={name} color={color} size={size} style={styles.leftIcon} />
       )}
@@ -44,7 +44,8 @@ const SettingItem = ({
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginHorizontal: sizeScale(24)
   },
   title: {
     flex: 1

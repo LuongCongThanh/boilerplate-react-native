@@ -7,22 +7,18 @@ import View from './View'
 
 export type Props = {
   containerStyle?: ViewStyle
-  margin?: string
-  padding?: string
   pinCount?: number
   autoFocusOnLoad?: boolean
 } & Omit<InputProps, 'pinCount' | 'autoFocusOnLoad'>
 
 const OTPInput: FC<Props> = ({
   containerStyle,
-  margin,
-  padding,
   pinCount = 5,
   autoFocusOnLoad = false,
   ...rest
 }) => {
   return (
-    <View style={containerStyle} margin={margin} padding={padding}>
+    <View style={containerStyle}>
       <OTPInputView
         codeInputFieldStyle={styles.codeInput}
         codeInputHighlightStyle={styles.codeInputHighlight}

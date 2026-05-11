@@ -7,7 +7,7 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import Text, {TextType} from 'src/components/core/Text'
 import {useAppNavigation} from 'src/routes'
 import {AppRoutes} from 'src/routes/routes'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 import {AppLogo, PasswordField, RoundButton} from 'src/components'
 import {
   createNewPasswordValidationSchema,
@@ -36,7 +36,9 @@ const CreateNewPassword = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <AppLogo />
-        <Text textType={TextType.title} margin="42, 0, 16, 0">
+        <Text
+          textType={TextType.title}
+          style={{marginTop: sizeScale(42), marginBottom: sizeScale(16)}}>
           {t('auth.createNewPassword.title')}
         </Text>
         <Text textType={TextType.body3} color={COLORS.gray} textAlign="center">
@@ -58,7 +60,7 @@ const CreateNewPassword = () => {
           autoCapitalize="none"
         />
         <RoundButton
-          margin="4, 0, 0, 0"
+          style={{marginTop: sizeScale(4)}}
           text={t('auth.createNewPassword.resetPassword')}
           onPress={() => methods.handleSubmit(handleResetPassword)()}
         />

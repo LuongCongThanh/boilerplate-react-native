@@ -27,7 +27,11 @@ const Header = (props: Props) => {
       <View style={styles.left}>
         {canGoBack && (
           <IconButton
-            padding="10,0,10,10"
+            style={{
+              paddingTop: sizeScale(10),
+              paddingBottom: sizeScale(10),
+              paddingLeft: sizeScale(10)
+            }}
             name="arrow-left"
             color={COLORS.primary}
             size={24}

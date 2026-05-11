@@ -9,15 +9,11 @@ import Text, {TextType} from 'src/components/core/Text'
 import OTPInput, {Props as OTPInputProps} from 'src/components/core/OTPInput'
 
 export type Props = OTPInputProps & {
-  margin?: string
-  padding?: string
   name: string
   containerStyle?: ViewStyle
 }
 
 const OTPInputField: FC<Props> = ({
-  margin = '0, 0, 8, 0',
-  padding,
   name,
   containerStyle,
   ...rest
@@ -43,7 +39,7 @@ const OTPInputField: FC<Props> = ({
   }, [name, trigger])
 
   return (
-    <View margin={margin} padding={padding} style={containerStyle}>
+    <View style={[styles.wrapper, containerStyle]}>
       <Controller
         control={control}
         name={name}
@@ -66,6 +62,9 @@ const OTPInputField: FC<Props> = ({
 export default OTPInputField
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginBottom: sizeScale(8)
+  },
   error: {
     minHeight: sizeScale(14),
     lineHeight: sizeScale(14)

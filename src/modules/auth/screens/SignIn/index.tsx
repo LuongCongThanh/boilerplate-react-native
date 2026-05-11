@@ -3,7 +3,7 @@ import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
 import {View} from 'react-native'
 import {AppLogo, Text, TextButton, TextType} from 'src/components'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 import {AppRoutes} from 'src/routes/routes'
 import {useAppNavigation} from 'src/routes'
 import styles from './styles'
@@ -29,7 +29,9 @@ const SignIn = () => {
     <View style={styles.container}>
       <View style={styles.welcomeContainer}>
         <AppLogo />
-        <Text textType={TextType.title} margin="32, 0, 8, 0">
+        <Text
+          textType={TextType.title}
+          style={{marginTop: sizeScale(32), marginBottom: sizeScale(8)}}>
           {t('auth.signIn.content')}
         </Text>
         <Text textType={TextType.body3} color={COLORS.gray}>
@@ -39,7 +41,7 @@ const SignIn = () => {
 
       <LoginForm />
 
-      <Separator margin="24, 0" />
+      <Separator style={{marginVertical: sizeScale(24)}} />
 
       <GoogleLogin />
 

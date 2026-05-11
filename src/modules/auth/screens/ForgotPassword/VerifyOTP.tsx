@@ -7,7 +7,7 @@ import {zodResolver} from '@hookform/resolvers/zod'
 import {useAppNavigation} from 'src/routes'
 import {TextButton, Text, TextType, OTPInputField, RoundButton, AppLogo} from 'src/components'
 import {AppRoutes} from 'src/routes/routes'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 import {otpValidationSchema, OTPFormValues} from 'src/modules/auth/constants/validator'
 
 import styles from './styles'
@@ -31,7 +31,9 @@ const VerifyOTP = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <AppLogo />
-        <Text textType={TextType.title} margin="42, 0, 16, 0">
+        <Text
+          textType={TextType.title}
+          style={{marginTop: sizeScale(42), marginBottom: sizeScale(16)}}>
           {t('auth.verifyOTP.title')}
         </Text>
         <Text textType={TextType.body3} color={COLORS.gray} textAlign="center">
@@ -42,7 +44,7 @@ const VerifyOTP = () => {
       <FormProvider {...methods}>
         <OTPInputField name="code" />
         <RoundButton
-          margin="4, 0, 0, 0"
+          style={{marginTop: sizeScale(4)}}
           text={t('auth.forgotPassword.verify')}
           onPress={() => methods.handleSubmit(handleVerifyCode)()}
         />

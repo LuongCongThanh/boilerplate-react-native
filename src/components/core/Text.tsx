@@ -4,8 +4,6 @@ import {Text as RNText, TextProps, TextStyle} from 'react-native'
 import {
   fontMaker,
   sizeFont,
-  margin as addMargin,
-  padding as addPadding,
   FontType,
   FontWeight,
   COLORS
@@ -46,8 +44,6 @@ export type Props = {
   color?: string
   lineHeight?: number
   textAlign?: TextStyle['textAlign']
-  margin?: string
-  padding?: string
   style?: TextProps['style']
   fontType?: FontType
 } & TextProps
@@ -59,8 +55,6 @@ const Text = ({
   color,
   lineHeight,
   textAlign,
-  margin,
-  padding,
   children,
   style,
   fontType,
@@ -88,8 +82,6 @@ const Text = ({
         resolvedColor ? {color: resolvedColor} : undefined,
         lineHeight ? {lineHeight: sizeFont(lineHeight)} : undefined,
         textAlign ? {textAlign} : undefined,
-        margin ? addMargin(margin) : undefined,
-        padding ? addPadding(padding) : undefined,
         ...restStyle
       ]}>
       {children}

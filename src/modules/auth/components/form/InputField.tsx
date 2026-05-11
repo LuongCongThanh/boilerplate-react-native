@@ -10,8 +10,6 @@ import View from 'src/components/core/View'
 import {COLORS, sizeScale} from 'src/styles'
 
 export type Props = TextInputProps & {
-  margin?: string
-  padding?: string
   prefix?: React.ReactNode
   suffix?: React.ReactNode
   placeholder?: string
@@ -30,8 +28,6 @@ const PrefixIcon = ({iconName}: {iconName: string}) => (
 )
 
 const InputField: FC<Props> = ({
-  margin = '0, 0, 8, 0',
-  padding,
   name,
   prefix,
   iconName,
@@ -49,7 +45,7 @@ const InputField: FC<Props> = ({
   const errorMsg = errors[name]?.message as string | undefined
 
   return (
-    <View margin={margin} padding={padding} style={containerStyle}>
+    <View style={[styles.wrapper, containerStyle]}>
       <Controller
         control={control}
         name={name}
@@ -77,6 +73,9 @@ const InputField: FC<Props> = ({
 export default InputField
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginBottom: sizeScale(8)
+  },
   input: {
     borderColor: COLORS.lightGray,
     borderWidth: sizeScale(1),

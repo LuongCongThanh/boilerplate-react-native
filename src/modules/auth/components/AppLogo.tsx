@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native'
 import Icon from 'src/components/core/Icon'
 import View from 'src/components/core/View'
 import Text from 'src/components/core/Text'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 
 const AppLogo = () => {
   return (
@@ -16,7 +16,7 @@ const AppLogo = () => {
         color={COLORS.primary}
       />
 
-      <Text color={COLORS.gray500} margin="10, 0, 0, 0">
+      <Text color={COLORS.gray500} style={{marginTop: sizeScale(10)}}>
         {'React Native '}
         <Text weight="600" color={COLORS.primary}>
           Boilerplate

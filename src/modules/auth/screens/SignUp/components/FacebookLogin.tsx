@@ -3,6 +3,7 @@ import {useTranslation} from 'react-i18next'
 
 import FacebookIcon from 'src/assets/img/auth/svg/ic_facebook.svg'
 import {SocialLoginButton} from 'src/components'
+import {sizeScale} from 'src/styles'
 
 export type Props = {}
 
@@ -12,7 +13,7 @@ const FacebookLogin = ({}: Props) => {
     <SocialLoginButton
       icon={<FacebookIcon />}
       text={t('auth.signUp.loginFacebook')}
-      margin="20, 0, 0, 0"
+      style={{marginTop: sizeScale(20)}}
     />
   )
 }

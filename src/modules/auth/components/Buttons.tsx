@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {StyleSheet} from 'react-native'
+import {StyleProp, StyleSheet, ViewStyle} from 'react-native'
 import Text, {Props as TextProps, TextType} from 'src/components/core/Text'
 import Button, {Props as ButtonProps} from 'src/components/core/Button'
 import View from 'src/components/core/View'
@@ -40,10 +40,11 @@ export const RoundButton: FC<TextButtonProps> = ({
   color = COLORS.white,
   weight = '500',
   textProps,
+  style,
   ...rest
 }) => {
   return (
-    <Button style={styles.roundButton} {...rest}>
+    <Button style={[styles.roundButton, style as StyleProp<ViewStyle>]} {...rest}>
       <Text textType={textType} color={color} weight={weight} {...textProps}>
         {text}
       </Text>
@@ -58,11 +59,12 @@ export const SocialLoginButton: FC<SocialLoginButtonProps> = ({
   color = COLORS.primary,
   weight = '500',
   textProps,
+  style,
   ...rest
 }) => {
   return (
-    <Button style={styles.socialLoginButton} {...rest}>
-      <View margin="0, 10, 0, 0">{icon}</View>
+    <Button style={[styles.socialLoginButton, style as StyleProp<ViewStyle>]} {...rest}>
+      <View style={{marginRight: sizeScale(10)}}>{icon}</View>
       <Text textType={textType} color={color} weight={weight} {...textProps}>
         {text}
       </Text>

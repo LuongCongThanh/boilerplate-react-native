@@ -10,6 +10,7 @@ import {
   loginValidationSchema,
   LoginFormValues
 } from 'src/modules/auth/constants/validator'
+import {sizeScale} from 'src/styles'
 
 const LoginForm = () => {
   const {t} = useTranslation()
@@ -39,7 +40,7 @@ const LoginForm = () => {
         autoCapitalize="none"
       />
       <RoundButton
-        margin="4, 0, 0, 0"
+        style={{marginTop: sizeScale(4)}}
         text={t('auth.signIn.title')}
         onPress={() => methods.handleSubmit(handleSignIn)()}
       />

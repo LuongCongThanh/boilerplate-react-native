@@ -42,10 +42,10 @@ const ErrorPopup = () => {
 
   return (
     <Modal isVisible={isVisible} onBackdropPress={hide}>
-      <View style={styles.container} padding="32, 48">
+      <View style={styles.container}>
         <ErrorCircle />
         <Text
-          margin="32, 0, 8, 0"
+          style={{marginTop: sizeScale(32), marginBottom: sizeScale(8)}}
           textType={TextType.h1}
           weight="600"
           textAlign="center">
@@ -53,7 +53,7 @@ const ErrorPopup = () => {
           {t(title as any)}
         </Text>
         <Text
-          margin="0, 0, 32, 0"
+          style={{marginBottom: sizeScale(32)}}
           textType={TextType.body3}
           color={COLORS.gray500}
           textAlign="center">
@@ -69,7 +69,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
     borderRadius: sizeScale(48),
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingVertical: sizeScale(32),
+    paddingHorizontal: sizeScale(48)
   }
 })
 

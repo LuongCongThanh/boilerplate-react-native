@@ -6,7 +6,7 @@ import {zodResolver} from '@hookform/resolvers/zod'
 
 import {AppLogo, InputField, RoundButton} from 'src/components'
 import Text, {TextType} from 'src/components/core/Text'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 import {useAppNavigation} from 'src/routes'
 import {AppRoutes} from 'src/routes/routes'
 import {
@@ -35,7 +35,9 @@ const ForgotPassword = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <AppLogo />
-        <Text textType={TextType.title} margin="42, 0, 8, 0">
+        <Text
+          textType={TextType.title}
+          style={{marginTop: sizeScale(42), marginBottom: sizeScale(8)}}>
           {t('auth.forgotPassword.title')}
         </Text>
         <Text textType={TextType.body3} color={COLORS.gray} textAlign="center">
@@ -51,7 +53,7 @@ const ForgotPassword = () => {
           autoCapitalize="none"
         />
         <RoundButton
-          margin="4, 0, 0, 0"
+          style={{marginTop: sizeScale(4)}}
           text={t('auth.forgotPassword.sendCode')}
           onPress={() => methods.handleSubmit(handleSendCode)()}
         />

@@ -4,7 +4,7 @@ import {View} from 'react-native'
 import {Text, TextButton, TextType} from 'src/components'
 import {useAppNavigation} from 'src/routes'
 import {AppRoutes} from 'src/routes/routes'
-import {COLORS} from 'src/styles'
+import {COLORS, sizeScale} from 'src/styles'
 import FacebookLogin from './components/FacebookLogin'
 import GoogleLogin from './components/GoogleLogin'
 import SignUpForm from './components/SignUpForm'
@@ -23,7 +23,9 @@ const SignUp = () => {
   return (
     <View style={styles.container}>
       <View style={styles.welcomeContainer}>
-        <Text textType={TextType.title} margin="0, 0, 8, 0">
+        <Text
+          textType={TextType.title}
+          style={{marginBottom: sizeScale(8)}}>
           {t('auth.signUp.content')}
         </Text>
         <Text textType={TextType.body3} color={COLORS.gray}>
@@ -33,7 +35,7 @@ const SignUp = () => {
 
       <SignUpForm />
 
-      <Separator margin="24, 0" />
+      <Separator style={{marginVertical: sizeScale(24)}} />
 
       <GoogleLogin />
 
