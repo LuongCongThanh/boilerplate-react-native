@@ -1,0 +1,13 @@
+{
+  "signIn.title": "Sign In",
+  "signIn.content": "Hi, Welcome Back!",
+  "signIn.caption": "Hope you’re doing fine",
+  "signIn.loginGoogle": "Sign In with Google",
+  "signIn.loginFacebook": "Sign In with Facebook",
+  "signIn.forgotPassword": "Forgot password?",
+  "signIn.haventAccount": "Don’t have an account yet ? ",
+  "signIn.signUp": "Sign up",
+
+  "signUp.title": "Sign Up",
+  "forgotPassword.title": "Forgot Password"
+}
