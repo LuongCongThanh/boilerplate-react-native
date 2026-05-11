@@ -1,9 +1,9 @@
-import React, {FC} from 'react'
-import {StyleProp, StyleSheet, ViewStyle} from 'react-native'
-import Text, {Props as TextProps, TextType} from 'src/components/core/Text'
-import Button, {Props as ButtonProps} from 'src/components/core/Button'
+import React, { FC } from 'react'
+import { ActivityIndicator, StyleProp, StyleSheet, ViewStyle } from 'react-native'
+import Button, { Props as ButtonProps } from 'src/components/core/Button'
+import Text, { Props as TextProps, TextType } from 'src/components/core/Text'
 import View from 'src/components/core/View'
-import {COLORS, FontWeight, sizeScale} from 'src/styles'
+import { COLORS, FontWeight, sizeScale } from 'src/styles'
 
 export type TextButtonProps = {
   text: string
@@ -11,6 +11,7 @@ export type TextButtonProps = {
   color?: string
   weight?: FontWeight
   textProps?: TextProps
+  isLoading?: boolean
 } & ButtonProps
 
 export type SocialLoginButtonProps = {
@@ -40,14 +41,22 @@ export const RoundButton: FC<TextButtonProps> = ({
   color = COLORS.white,
   weight = '500',
   textProps,
+  isLoading,
   style,
   ...rest
 }) => {
   return (
-    <Button style={[styles.roundButton, style as StyleProp<ViewStyle>]} {...rest}>
-      <Text textType={textType} color={color} weight={weight} {...textProps}>
-        {text}
-      </Text>
+    <Button
+      style={[styles.roundButton, style as StyleProp<ViewStyle>]}
+      disabled={isLoading}
+      {...rest}>
+      {isLoading ? (
+        <ActivityIndicator color={COLORS.white} />
+      ) : (
+        <Text textType={textType} color={color} weight={weight} {...textProps}>
+          {text}
+        </Text>
+      )}
     </Button>
   )
 }
@@ -63,7 +72,9 @@ export const SocialLoginButton: FC<SocialLoginButtonProps> = ({
   ...rest
 }) => {
   return (
-    <Button style={[styles.socialLoginButton, style as StyleProp<ViewStyle>]} {...rest}>
+    <Button
+      style={[styles.socialLoginButton, style as StyleProp<ViewStyle>]}
+      {...rest}>
       <View style={{marginRight: sizeScale(10)}}>{icon}</View>
       <Text textType={textType} color={color} weight={weight} {...textProps}>
         {text}
