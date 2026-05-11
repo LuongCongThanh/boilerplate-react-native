@@ -2,10 +2,11 @@ import React from 'react'
 import {StyleSheet, View} from 'react-native'
 import {useTranslation} from 'react-i18next'
 import {NativeStackHeaderProps} from '@react-navigation/native-stack'
-import {COLORS, sizeScale} from 'src/styles'
-import IconButton from '../../core/IconButton'
-import Text, {TextType} from '../Text'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
+
+import {COLORS, sizeScale} from 'src/styles'
+import IconButton from './IconButton'
+import Text, {TextType} from './Text'
 
 type Props = NativeStackHeaderProps
 
@@ -16,6 +17,7 @@ const Header = (props: Props) => {
 
   const canGoBack = navigation.canGoBack()
   const insets = useSafeAreaInsets()
+
   return (
     <View
       style={[
@@ -39,15 +41,14 @@ const Header = (props: Props) => {
           <Text
             textType={TextType.header}
             textAlign={headerTitleAlign ?? 'center'}>
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             {t(title as any)}
           </Text>
         )}
       </View>
 
       <View style={styles.right}>
-        {headerRight
-          ? headerRight({canGoBack, tintColor: headerTintColor})
-          : null}
+        {headerRight ? headerRight({canGoBack, tintColor: headerTintColor}) : null}
       </View>
     </View>
   )

@@ -1,15 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {useTranslation} from 'react-i18next'
-
-import Modal from 'src/components/core/Modal'
-import View from 'src/components/core/View'
-import ErrorCircle from 'src/assets/img/common/svg/error-circle.svg'
 import {StyleSheet} from 'react-native'
+
+import Modal from './Modal'
+import View from './View'
+import Text, {TextType} from './Text'
+import ErrorCircle from 'src/assets/img/common/svg/error-circle.svg'
 import {COLORS, sizeScale} from 'src/styles'
 import AppAlert from 'src/services/event/alert'
 import {IErrorBody} from 'src/model/common'
-
-import Text, {TextType} from '../Text'
 
 const ErrorPopup = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false)
@@ -19,24 +18,18 @@ const ErrorPopup = () => {
   })
 
   const {t} = useTranslation()
-
   const {title, message} = data
 
   const show = useCallback(() => setIsVisible(true), [])
-
   const hide = useCallback(() => setIsVisible(false), [])
 
   const onError = useCallback(
     (errorData: IErrorBody) => {
-      if (isVisible) {
-        return
-      }
-
+      if (isVisible) return
       setData({
         title: errorData.title ?? 'common.errorPopup.title',
         message: errorData.message ?? 'common.errorPopup.generalMessage'
       })
-
       show()
     },
     [isVisible, show]
@@ -44,7 +37,6 @@ const ErrorPopup = () => {
 
   useEffect(() => {
     const unsubscribe = AppAlert.registerErrorListener(onError)
-
     return () => unsubscribe.remove()
   }, [onError])
 
@@ -52,12 +44,12 @@ const ErrorPopup = () => {
     <Modal isVisible={isVisible} onBackdropPress={hide}>
       <View style={styles.container} padding="32, 48">
         <ErrorCircle />
-
         <Text
           margin="32, 0, 8, 0"
           textType={TextType.h1}
           weight="600"
           textAlign="center">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {t(title as any)}
         </Text>
         <Text
@@ -65,6 +57,7 @@ const ErrorPopup = () => {
           textType={TextType.body3}
           color={COLORS.gray500}
           textAlign="center">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {t(message as any)}
         </Text>
       </View>
@@ -75,7 +68,6 @@ const ErrorPopup = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.white,
-    alignItem: 'center',
     borderRadius: sizeScale(48),
     alignItems: 'center'
   }

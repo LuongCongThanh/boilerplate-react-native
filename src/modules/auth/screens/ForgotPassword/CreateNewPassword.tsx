@@ -4,7 +4,7 @@ import {View} from 'react-native'
 import {useForm, FormProvider} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
 
-import Text, {TextType} from 'src/components/appBase/Text'
+import Text, {TextType} from 'src/components/core/Text'
 import {useAppNavigation} from 'src/routes'
 import {AppRoutes} from 'src/routes/routes'
 import {COLORS} from 'src/styles'

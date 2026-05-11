@@ -2,10 +2,9 @@ import React from 'react'
 import {StyleSheet} from 'react-native'
 
 import Icon from 'src/components/core/Icon'
+import View from 'src/components/core/View'
+import Text from 'src/components/core/Text'
 import {COLORS} from 'src/styles'
-
-import View from '../core/View'
-import Text from './Text'
 
 const AppLogo = () => {
   return (

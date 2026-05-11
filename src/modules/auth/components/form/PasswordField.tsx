@@ -1,7 +1,7 @@
 import React, {FC, useCallback, useState} from 'react'
 import {COLORS} from 'src/styles'
 
-import IconButton from '../../core/IconButton'
+import IconButton from 'src/components/core/IconButton'
 import InputField, {Props as InputFieldProps} from './InputField'
 
 export type Props = {

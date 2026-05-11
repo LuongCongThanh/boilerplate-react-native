@@ -1,6 +1,6 @@
 import React, {FC} from 'react'
 import {StyleSheet} from 'react-native'
-import Text, {Props as TextProps, TextType} from 'src/components/appBase/Text'
+import Text, {Props as TextProps, TextType} from 'src/components/core/Text'
 import Button, {Props as ButtonProps} from 'src/components/core/Button'
 import View from 'src/components/core/View'
 import {COLORS, FontWeight, sizeScale} from 'src/styles'

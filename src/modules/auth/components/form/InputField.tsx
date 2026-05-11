@@ -4,11 +4,10 @@ import {useTranslation} from 'react-i18next'
 import {Controller, useFormContext} from 'react-hook-form'
 
 import TextInput, {Props as TextInputProps} from 'src/components/core/TextInput'
-import {COLORS, sizeScale} from 'src/styles'
-
-import Text, {TextType} from '../Text'
-import Icon from '../../core/Icon'
+import Text, {TextType} from 'src/components/core/Text'
+import Icon from 'src/components/core/Icon'
 import View from 'src/components/core/View'
+import {COLORS, sizeScale} from 'src/styles'
 
 export type Props = TextInputProps & {
   margin?: string

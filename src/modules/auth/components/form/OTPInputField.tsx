@@ -5,9 +5,8 @@ import {Controller, useFormContext} from 'react-hook-form'
 
 import {COLORS, sizeScale} from 'src/styles'
 import View from 'src/components/core/View'
-
-import Text, {TextType} from '../Text'
-import OTPInput, {props as OTPInputProps} from '../OTPInput'
+import Text, {TextType} from 'src/components/core/Text'
+import OTPInput, {Props as OTPInputProps} from 'src/components/core/OTPInput'
 
 export type Props = OTPInputProps & {
   margin?: string
