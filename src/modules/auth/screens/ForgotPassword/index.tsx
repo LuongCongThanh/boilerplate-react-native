@@ -1,30 +1,35 @@
 import React, {useCallback} from 'react'
-import {GestureResponderEvent, View} from 'react-native'
+import {View} from 'react-native'
 import {useTranslation} from 'react-i18next'
-import {Formik} from 'formik'
+import {useForm, FormProvider} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
 
 import {AppLogo, InputField, RoundButton} from 'src/components'
 import Text, {TextType} from 'src/components/appBase/Text'
 import {COLORS} from 'src/styles'
 import {useAppNavigation} from 'src/routes'
 import {AppRoutes} from 'src/routes/routes'
-
+import {
+  forgetPasswordSchema,
+  ForgotPasswordFormValues
+} from '../../constants/validator'
 import styles from './styles'
-import {forgetPasswordSchema} from '../../constants/validator'
-
-const INIT_LOGIN_FORM_VALUES = {email: ''}
-
-interface FormValues {
-  email: string
-}
 
 const ForgotPassword = () => {
   const {t} = useTranslation()
   const navigation = useAppNavigation()
 
-  const handleSendCode = useCallback(() => {
-    navigation.navigate(AppRoutes.VerifyOTP)
-  }, [])
+  const methods = useForm<ForgotPasswordFormValues>({
+    resolver: zodResolver(forgetPasswordSchema),
+    defaultValues: {email: ''}
+  })
+
+  const handleSendCode = useCallback(
+    (_values: ForgotPasswordFormValues) => {
+      navigation.navigate(AppRoutes.VerifyOTP)
+    },
+    [navigation]
+  )
 
   return (
     <View style={styles.container}>
@@ -38,30 +43,19 @@ const ForgotPassword = () => {
         </Text>
       </View>
 
-      <Formik<FormValues>
-        initialValues={INIT_LOGIN_FORM_VALUES}
-        onSubmit={handleSendCode}
-        validationSchema={forgetPasswordSchema}
-        validateOnChange>
-        {({handleSubmit}) => (
-          <>
-            <InputField
-              placeholder={t('auth.signIn.placeholderEmail')}
-              iconName="email-outline"
-              name="email"
-              autoCapitalize="none"
-            />
-
-            <RoundButton
-              margin="4, 0, 0, 0"
-              text={t('auth.forgotPassword.sendCode')}
-              onPress={
-                handleSubmit as unknown as (e: GestureResponderEvent) => void
-              }
-            />
-          </>
-        )}
-      </Formik>
+      <FormProvider {...methods}>
+        <InputField
+          placeholder={t('auth.signIn.placeholderEmail')}
+          iconName="email-outline"
+          name="email"
+          autoCapitalize="none"
+        />
+        <RoundButton
+          margin="4, 0, 0, 0"
+          text={t('auth.forgotPassword.sendCode')}
+          onPress={() => methods.handleSubmit(handleSendCode)()}
+        />
+      </FormProvider>
     </View>
   )
 }

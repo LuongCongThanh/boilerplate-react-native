@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import {StyleSheet, ViewStyle} from 'react-native'
 import {useTranslation} from 'react-i18next'
-import {useField} from 'formik'
+import {Controller, useFormContext} from 'react-hook-form'
 
 import TextInput, {Props as TextInputProps} from 'src/components/core/TextInput'
 import {COLORS, sizeScale} from 'src/styles'
@@ -21,16 +21,14 @@ export type Props = TextInputProps & {
   containerStyle?: ViewStyle
 }
 
-const PrefixIcon = ({iconName}: {iconName: string}) => {
-  return (
-    <Icon
-      name={iconName}
-      color={COLORS.lightGray}
-      size={18}
-      style={styles.leftIcon}
-    />
-  )
-}
+const PrefixIcon = ({iconName}: {iconName: string}) => (
+  <Icon
+    name={iconName}
+    color={COLORS.lightGray}
+    size={18}
+    style={styles.leftIcon}
+  />
+)
 
 const InputField: FC<Props> = ({
   margin = '0, 0, 8, 0',
@@ -43,27 +41,35 @@ const InputField: FC<Props> = ({
   containerStyle,
   ...rest
 }) => {
-  const [field, meta] = useField(name)
-  const {onChange, onBlur} = field
-  const {touched, error, value} = meta
-
-  const errorMsg = touched && error ? error : ''
+  const {
+    control,
+    formState: {errors}
+  } = useFormContext()
   const {t} = useTranslation()
+
+  const errorMsg = errors[name]?.message as string | undefined
 
   return (
     <View margin={margin} padding={padding} style={containerStyle}>
-      <TextInput
-        suffix={suffix}
-        prefix={iconName ? <PrefixIcon iconName={iconName} /> : prefix}
-        placeholder={placeholder}
-        onChangeText={onChange(name)}
-        onBlur={onBlur(name)}
-        value={value}
-        containerStyle={styles.input}
-        {...rest}
+      <Controller
+        control={control}
+        name={name}
+        render={({field: {onChange, onBlur, value}}) => (
+          <TextInput
+            suffix={suffix}
+            prefix={iconName ? <PrefixIcon iconName={iconName} /> : prefix}
+            placeholder={placeholder}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value as string}
+            containerStyle={styles.input}
+            {...rest}
+          />
+        )}
       />
       <Text textType={TextType.caption} color={COLORS.red} style={styles.error}>
-        {t(errorMsg as any)}
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {errorMsg ? t(errorMsg as any) : ''}
       </Text>
     </View>
   )

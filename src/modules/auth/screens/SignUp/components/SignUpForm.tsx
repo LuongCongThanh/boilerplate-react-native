@@ -1,66 +1,56 @@
 import React from 'react'
-import {GestureResponderEvent} from 'react-native/types'
 import {useTranslation} from 'react-i18next'
-import {Formik} from 'formik'
+import {useForm, FormProvider} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
 
 import {PasswordField, InputField, RoundButton} from 'src/components'
-import {signUpValidationSchema} from 'src/modules/auth/constants/validator'
-
-const INIT_SIGNUP_FORM_VALUES = {
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
-}
+import {
+  signUpValidationSchema,
+  SignUpFormValues
+} from 'src/modules/auth/constants/validator'
 
 const SignUpForm = () => {
   const {t} = useTranslation()
 
-  const handleSignUp = () => {}
+  const methods = useForm<SignUpFormValues>({
+    resolver: zodResolver(signUpValidationSchema),
+    defaultValues: {username: '', email: '', password: '', confirmPassword: ''}
+  })
+
+  const handleSignUp = (_values: SignUpFormValues) => {}
 
   return (
-    <Formik
-      initialValues={INIT_SIGNUP_FORM_VALUES}
-      onSubmit={handleSignUp}
-      validationSchema={signUpValidationSchema}
-      validateOnChange>
-      {({handleSubmit}) => (
-        <>
-          <InputField
-            placeholder={t('auth.signUp.placeholderUser')}
-            iconName="account-outline"
-            name="username"
-            autoCapitalize="none"
-          />
-          <InputField
-            placeholder={t('auth.signIn.placeholderEmail')}
-            iconName="email-outline"
-            name="email"
-            autoCapitalize="none"
-          />
-          <PasswordField
-            placeholder={t('auth.signIn.placeholderPassword')}
-            name="password"
-            iconName="lock-outline"
-            autoCapitalize="none"
-          />
-          <PasswordField
-            placeholder={t('auth.signIn.placeholderConfirmPassword')}
-            name="confirmPassword"
-            iconName="lock-outline"
-            autoCapitalize="none"
-          />
-
-          <RoundButton
-            margin="20, 0, 0, 0"
-            text={t('auth.signUp.content')}
-            onPress={
-              handleSubmit as unknown as (e: GestureResponderEvent) => void
-            }
-          />
-        </>
-      )}
-    </Formik>
+    <FormProvider {...methods}>
+      <InputField
+        placeholder={t('auth.signUp.placeholderUser')}
+        iconName="account-outline"
+        name="username"
+        autoCapitalize="none"
+      />
+      <InputField
+        placeholder={t('auth.signIn.placeholderEmail')}
+        iconName="email-outline"
+        name="email"
+        autoCapitalize="none"
+      />
+      <PasswordField
+        placeholder={t('auth.signIn.placeholderPassword')}
+        name="password"
+        iconName="lock-outline"
+        autoCapitalize="none"
+      />
+      <PasswordField
+        placeholder={t('auth.signIn.placeholderConfirmPassword')}
+        name="confirmPassword"
+        iconName="lock-outline"
+        autoCapitalize="none"
+      />
+      <RoundButton
+        margin="20, 0, 0, 0"
+        text={t('auth.signUp.content')}
+        onPress={() => methods.handleSubmit(handleSignUp)()}
+      />
+    </FormProvider>
   )
 }
 

@@ -1,36 +1,29 @@
 import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
-import {GestureResponderEvent, View} from 'react-native'
-import {Formik} from 'formik'
+import {View} from 'react-native'
+import {useForm, FormProvider} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
 
 import {useAppNavigation} from 'src/routes'
-import {
-  TextButton,
-  Text,
-  TextType,
-  OTPInputField,
-  RoundButton,
-  AppLogo
-} from 'src/components'
+import {TextButton, Text, TextType, OTPInputField, RoundButton, AppLogo} from 'src/components'
 import {AppRoutes} from 'src/routes/routes'
 import {COLORS} from 'src/styles'
-import {otpValidationSchema} from 'src/modules/auth/constants/validator'
+import {otpValidationSchema, OTPFormValues} from 'src/modules/auth/constants/validator'
 
 import styles from './styles'
-
-interface FormValues {
-  code: string
-}
-
-const INIT_FORM_VALUES = {code: ''}
 
 const VerifyOTP = () => {
   const {t} = useTranslation()
   const navigation = useAppNavigation()
 
+  const methods = useForm<OTPFormValues>({
+    resolver: zodResolver(otpValidationSchema),
+    defaultValues: {code: ''}
+  })
+
   const handleResendCode = useCallback(() => {}, [])
 
-  const handleVerifyCode = (_values: FormValues) => {
+  const handleVerifyCode = (_values: OTPFormValues) => {
     navigation.navigate(AppRoutes.CreateNewPassword)
   }
 
@@ -46,24 +39,14 @@ const VerifyOTP = () => {
         </Text>
       </View>
 
-      <Formik<FormValues>
-        initialValues={INIT_FORM_VALUES}
-        onSubmit={handleVerifyCode}
-        validationSchema={otpValidationSchema}
-        validateOnChange>
-        {({handleSubmit}) => (
-          <>
-            <OTPInputField name="code" />
-            <RoundButton
-              margin="4, 0, 0, 0"
-              text={t('auth.forgotPassword.verify')}
-              onPress={
-                handleSubmit as unknown as (e: GestureResponderEvent) => void
-              }
-            />
-          </>
-        )}
-      </Formik>
+      <FormProvider {...methods}>
+        <OTPInputField name="code" />
+        <RoundButton
+          margin="4, 0, 0, 0"
+          text={t('auth.forgotPassword.verify')}
+          onPress={() => methods.handleSubmit(handleVerifyCode)()}
+        />
+      </FormProvider>
 
       <View style={styles.createAccount}>
         <Text textType={TextType.body3} weight="500" color={COLORS.gray}>

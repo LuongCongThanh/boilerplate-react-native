@@ -1,31 +1,36 @@
 import React, {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
-import {GestureResponderEvent, View} from 'react-native'
-import {Formik} from 'formik'
+import {View} from 'react-native'
+import {useForm, FormProvider} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
 
 import Text, {TextType} from 'src/components/appBase/Text'
 import {useAppNavigation} from 'src/routes'
 import {AppRoutes} from 'src/routes/routes'
 import {COLORS} from 'src/styles'
 import {AppLogo, PasswordField, RoundButton} from 'src/components'
-import {createNewPasswordValidationSchema} from 'src/modules/auth/constants/validator'
+import {
+  createNewPasswordValidationSchema,
+  CreateNewPasswordFormValues
+} from 'src/modules/auth/constants/validator'
 
 import styles from './styles'
-
-interface FormValues {
-  password: string
-  confirmPassword: string
-}
-
-const INIT_CREATE_NEW_PASSWORD_VALUES = {password: '', confirmPassword: ''}
 
 const CreateNewPassword = () => {
   const {t} = useTranslation()
   const navigation = useAppNavigation()
 
-  const handleResetPassword = useCallback(() => {
-    navigation.navigate(AppRoutes.VerifyOTP)
-  }, [])
+  const methods = useForm<CreateNewPasswordFormValues>({
+    resolver: zodResolver(createNewPasswordValidationSchema),
+    defaultValues: {password: '', confirmPassword: ''}
+  })
+
+  const handleResetPassword = useCallback(
+    (_values: CreateNewPasswordFormValues) => {
+      navigation.navigate(AppRoutes.VerifyOTP)
+    },
+    [navigation]
+  )
 
   return (
     <View style={styles.container}>
@@ -39,38 +44,25 @@ const CreateNewPassword = () => {
         </Text>
       </View>
 
-      <Formik<FormValues>
-        initialValues={INIT_CREATE_NEW_PASSWORD_VALUES}
-        onSubmit={handleResetPassword}
-        validationSchema={createNewPasswordValidationSchema}
-        validateOnChange>
-        {({handleSubmit}) => (
-          <>
-            <PasswordField
-              placeholder={t('auth.createNewPassword.placeholderPassword')}
-              name="password"
-              iconName="lock-outline"
-              autoCapitalize="none"
-            />
-            <PasswordField
-              placeholder={t(
-                'auth.createNewPassword.placeholderConfirmPassword'
-              )}
-              name="confirmPassword"
-              iconName="lock-outline"
-              autoCapitalize="none"
-            />
-
-            <RoundButton
-              margin="4, 0, 0, 0"
-              text={t('auth.createNewPassword.resetPassword')}
-              onPress={
-                handleSubmit as unknown as (e: GestureResponderEvent) => void
-              }
-            />
-          </>
-        )}
-      </Formik>
+      <FormProvider {...methods}>
+        <PasswordField
+          placeholder={t('auth.createNewPassword.placeholderPassword')}
+          name="password"
+          iconName="lock-outline"
+          autoCapitalize="none"
+        />
+        <PasswordField
+          placeholder={t('auth.createNewPassword.placeholderConfirmPassword')}
+          name="confirmPassword"
+          iconName="lock-outline"
+          autoCapitalize="none"
+        />
+        <RoundButton
+          margin="4, 0, 0, 0"
+          text={t('auth.createNewPassword.resetPassword')}
+          onPress={() => methods.handleSubmit(handleResetPassword)()}
+        />
+      </FormProvider>
     </View>
   )
 }

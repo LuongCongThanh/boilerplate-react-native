@@ -1,12 +1,7 @@
 import React, {FC, useEffect} from 'react'
-import {
-  StyleSheet,
-  ViewStyle,
-  Keyboard,
-  EmitterSubscription
-} from 'react-native'
+import {StyleSheet, ViewStyle, Keyboard, EmitterSubscription} from 'react-native'
 import {useTranslation} from 'react-i18next'
-import {useField} from 'formik'
+import {Controller, useFormContext} from 'react-hook-form'
 
 import {COLORS, sizeScale} from 'src/styles'
 import View from 'src/components/core/View'
@@ -28,30 +23,42 @@ const OTPInputField: FC<Props> = ({
   containerStyle,
   ...rest
 }) => {
-  const [field, meta, helpers] = useField(name)
-  const {onChange} = field
-  const {touched, error, value} = meta
-  const {setTouched} = helpers
-
-  const errorMsg = touched && error ? error : ''
+  const {
+    control,
+    formState: {errors},
+    setValue,
+    trigger
+  } = useFormContext()
   const {t} = useTranslation()
+
+  const errorMsg = errors[name]?.message as string | undefined
 
   useEffect(() => {
     let unsubscribe: EmitterSubscription
     if (name) {
       unsubscribe = Keyboard.addListener('keyboardDidHide', () =>
-        setTouched(true, true)
+        trigger(name)
       )
     }
-
     return () => unsubscribe?.remove()
-  }, [name, setTouched])
+  }, [name, trigger])
 
   return (
     <View margin={margin} padding={padding} style={containerStyle}>
-      <OTPInput onCodeChanged={onChange(name)} code={value} {...rest} />
+      <Controller
+        control={control}
+        name={name}
+        render={({field: {value}}) => (
+          <OTPInput
+            onCodeChanged={code => setValue(name, code, {shouldValidate: true})}
+            code={value as string}
+            {...rest}
+          />
+        )}
+      />
       <Text textType={TextType.caption} color={COLORS.red} style={styles.error}>
-        {t(errorMsg as any)}
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {errorMsg ? t(errorMsg as any) : ''}
       </Text>
     </View>
   )
