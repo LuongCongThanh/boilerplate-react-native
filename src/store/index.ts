@@ -1,4 +1,4 @@
-import {combineReducers, configureStore, Middleware} from '@reduxjs/toolkit'
+import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import {
   persistStore,
   persistReducer,
@@ -25,14 +25,6 @@ const rootReducer = combineReducers({
   common: commonReducer
 })
 
-const middlewares: Middleware[] = []
-
-if (__DEV__) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const createDebugger = require('redux-flipper').default
-  middlewares.push(createDebugger())
-}
-
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
 
 export const store = configureStore({
@@ -42,12 +34,10 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).concat(...middlewares)
+    })
 })
 
 export const persistor = persistStore(store)
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
