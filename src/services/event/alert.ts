@@ -1,18 +1,26 @@
-import {DeviceEventEmitter, EmitterSubscription} from 'react-native'
+import {DeviceEventEmitter} from 'react-native'
 
 import {AppEvent} from 'src/constants/events'
 import {IErrorBody} from 'src/model/common'
 
-class AppAlert {
-  static registerErrorListener = (
-    handler: (data: IErrorBody) => void
-  ): EmitterSubscription => {
-    return DeviceEventEmitter.addListener(AppEvent.Error, handler)
-  }
+export interface IErrorBus {
+  show(error: IErrorBody): void
+  subscribe(handler: (error: IErrorBody) => void): () => void
+}
 
-  static showError = (data: IErrorBody) => {
-    DeviceEventEmitter.emit(AppEvent.Error, data)
+export function createErrorBus(): IErrorBus {
+  return {
+    show(error) {
+      DeviceEventEmitter.emit(AppEvent.Error, error)
+    },
+    subscribe(handler) {
+      const subscription = DeviceEventEmitter.addListener(
+        AppEvent.Error,
+        handler
+      )
+      return () => subscription.remove()
+    }
   }
 }
 
-export default AppAlert
+export const errorBus = createErrorBus()

@@ -12,7 +12,7 @@ import {
 } from 'src/modules/auth/constants/validator'
 import {sizeScale} from 'src/styles'
 import {AppDispatch, RootState} from 'src/store'
-import AppAlert from 'src/services/event/alert'
+import {errorBus} from 'src/services/event/alert'
 import {normalizeError} from 'src/services/network/errorHandler'
 
 const LoginForm = () => {
@@ -30,7 +30,7 @@ const LoginForm = () => {
       loginAsync({username: values.email, password: values.password})
     )
     if (loginAsync.rejected.match(result)) {
-      AppAlert.showError(normalizeError(result.payload))
+      errorBus.show(normalizeError(result.payload))
     }
   }
 

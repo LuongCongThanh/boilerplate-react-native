@@ -7,7 +7,7 @@ import View from './View'
 import Text, {TextType} from './Text'
 import ErrorCircle from 'src/assets/img/common/svg/error-circle.svg'
 import {COLORS, sizeScale} from 'src/styles'
-import AppAlert from 'src/services/event/alert'
+import {errorBus} from 'src/services/event/alert'
 import {IErrorBody} from 'src/model/common'
 
 const ErrorPopup = () => {
@@ -36,8 +36,8 @@ const ErrorPopup = () => {
   )
 
   useEffect(() => {
-    const unsubscribe = AppAlert.registerErrorListener(onError)
-    return () => unsubscribe.remove()
+    const unsubscribe = errorBus.subscribe(onError)
+    return unsubscribe
   }, [onError])
 
   return (
@@ -48,7 +48,8 @@ const ErrorPopup = () => {
           style={{marginTop: sizeScale(32), marginBottom: sizeScale(8)}}
           textType={TextType.h1}
           weight="600"
-          textAlign="center">
+          textAlign="center"
+        >
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {t(title as any)}
         </Text>
@@ -56,7 +57,8 @@ const ErrorPopup = () => {
           style={{marginBottom: sizeScale(32)}}
           textType={TextType.body3}
           color={COLORS.gray500}
-          textAlign="center">
+          textAlign="center"
+        >
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           {t(message as any)}
         </Text>
