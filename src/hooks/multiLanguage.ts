@@ -1,10 +1,10 @@
 import {useEffect} from 'react'
 import {useSelector} from 'react-redux'
-import {RootState} from 'src/store'
+import {selectLanguage} from 'src/store/selectors'
 import i18n from 'src/translations'
 
 export const useAppLanguage = () => {
-  const language = useSelector((state: RootState) => state.common?.language)
+  const language = useSelector(selectLanguage)
 
   useEffect(() => {
     i18n.changeLanguage(language)

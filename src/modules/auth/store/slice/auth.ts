@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 
 import AuthApi from 'src/modules/auth/services/api'
 import {IUserSignInDTO} from 'src/modules/auth/model/dto'
@@ -6,12 +6,10 @@ import {IUserSignInDTO} from 'src/modules/auth/model/dto'
 interface AuthState {
   token?: string
   isLoading: boolean
-  error: string | null
 }
 
 const initialState: AuthState = {
-  isLoading: false,
-  error: null
+  isLoading: false
 }
 
 export const loginAsync = createAsyncThunk(
@@ -30,19 +28,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<Partial<AuthState>>) => {
-      return {...state, ...action.payload}
-    },
     logout: (state) => {
       state.token = undefined
-      state.error = null
     }
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginAsync.pending, (state) => {
         state.isLoading = true
-        state.error = null
       })
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.isLoading = false
@@ -54,5 +47,5 @@ const authSlice = createSlice({
   }
 })
 
-export const {login, logout} = authSlice.actions
+export const {logout} = authSlice.actions
 export default authSlice.reducer

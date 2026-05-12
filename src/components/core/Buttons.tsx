@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
-import { ActivityIndicator, StyleProp, StyleSheet, ViewStyle } from 'react-native'
-import Button, { Props as ButtonProps } from 'src/components/core/Button'
-import Text, { Props as TextProps, TextType } from 'src/components/core/Text'
+import React, {FC} from 'react'
+import {ActivityIndicator, StyleProp, StyleSheet, ViewStyle} from 'react-native'
+import Button, {Props as ButtonProps} from 'src/components/core/Button'
+import Text, {Props as TextProps, TextType} from 'src/components/core/Text'
 import View from 'src/components/core/View'
-import { COLORS, FontWeight, sizeScale } from 'src/styles'
+import {COLORS, FontWeight, sizeScale} from 'src/styles'
 
 export type TextButtonProps = {
   text: string
@@ -49,7 +49,8 @@ export const RoundButton: FC<TextButtonProps> = ({
     <Button
       style={[styles.roundButton, style as StyleProp<ViewStyle>]}
       disabled={isLoading}
-      {...rest}>
+      {...rest}
+    >
       {isLoading ? (
         <ActivityIndicator color={COLORS.white} />
       ) : (
@@ -74,7 +75,8 @@ export const SocialLoginButton: FC<SocialLoginButtonProps> = ({
   return (
     <Button
       style={[styles.socialLoginButton, style as StyleProp<ViewStyle>]}
-      {...rest}>
+      {...rest}
+    >
       <View style={{marginRight: sizeScale(10)}}>{icon}</View>
       <Text textType={textType} color={color} weight={weight} {...textProps}>
         {text}

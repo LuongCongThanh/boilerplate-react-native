@@ -11,14 +11,13 @@ import {
   LoginFormValues
 } from 'src/modules/auth/constants/validator'
 import {sizeScale} from 'src/styles'
-import {AppDispatch, RootState} from 'src/store'
-import {errorBus} from 'src/services/event/alert'
-import {normalizeError} from 'src/services/network/errorHandler'
+import {AppDispatch} from 'src/store'
+import {selectAuthIsLoading} from 'src/store/selectors'
 
 const LoginForm = () => {
   const {t} = useTranslation()
   const dispatch = useDispatch<AppDispatch>()
-  const isLoading = useSelector((state: RootState) => state.auth.isLoading)
+  const isLoading = useSelector(selectAuthIsLoading)
 
   const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginValidationSchema),
@@ -26,12 +25,9 @@ const LoginForm = () => {
   })
 
   const handleSignIn = async (values: LoginFormValues) => {
-    const result = await dispatch(
+    await dispatch(
       loginAsync({username: values.email, password: values.password})
     )
-    if (loginAsync.rejected.match(result)) {
-      errorBus.show(normalizeError(result.payload))
-    }
   }
 
   return (

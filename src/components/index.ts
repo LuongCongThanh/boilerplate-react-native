@@ -7,16 +7,11 @@ import IconButton from './core/IconButton'
 import ImagePicker from './core/ImagePicker'
 import OTPInput from './core/OTPInput'
 import ErrorPopup from './core/ErrorPopup'
-
-import {
-  TextButton,
-  RoundButton,
-  SocialLoginButton
-} from 'src/modules/auth/components/Buttons'
-import InputField from 'src/modules/auth/components/form/InputField'
-import PasswordField from 'src/modules/auth/components/form/PasswordField'
-import OTPInputField from 'src/modules/auth/components/form/OTPInputField'
-import AppLogo from 'src/modules/auth/components/AppLogo'
+import AppLogo from './core/AppLogo'
+import {TextButton, RoundButton, SocialLoginButton} from './core/Buttons'
+import InputField from './core/form/InputField'
+import PasswordField from './core/form/PasswordField'
+import OTPInputField from './core/form/OTPInputField'
 
 export {
   Text,

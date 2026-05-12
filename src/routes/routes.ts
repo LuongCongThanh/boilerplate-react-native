@@ -35,8 +35,14 @@ export type StackScreenConfig = {
   options?: NativeStackNavigationOptions
 }
 
+export type TabIcon = {
+  active: React.ComponentType
+  inactive: React.ComponentType
+}
+
 export type TabScreenConfig = {
   name: keyof AppStackParamList
   component: React.ComponentType<any>
   options?: BottomTabNavigationOptions
+  icon?: TabIcon
 }

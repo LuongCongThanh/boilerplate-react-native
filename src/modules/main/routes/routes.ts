@@ -5,7 +5,7 @@ export enum MainRoutes {
 }
 
 export type MainStackParamList = {
-  [MainRoutes.Home]: any
-  [MainRoutes.LocationSearching]: any
-  [MainRoutes.Calendar]: any
+  [MainRoutes.Home]: undefined
+  [MainRoutes.LocationSearching]: undefined
+  [MainRoutes.Calendar]: undefined
 }

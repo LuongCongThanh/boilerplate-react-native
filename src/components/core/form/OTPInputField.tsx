@@ -1,5 +1,10 @@
 import React, {FC, useEffect} from 'react'
-import {StyleSheet, ViewStyle, Keyboard, EmitterSubscription} from 'react-native'
+import {
+  StyleSheet,
+  ViewStyle,
+  Keyboard,
+  EmitterSubscription
+} from 'react-native'
 import {useTranslation} from 'react-i18next'
 import {Controller, useFormContext} from 'react-hook-form'
 
@@ -13,11 +18,7 @@ export type Props = OTPInputProps & {
   containerStyle?: ViewStyle
 }
 
-const OTPInputField: FC<Props> = ({
-  name,
-  containerStyle,
-  ...rest
-}) => {
+const OTPInputField: FC<Props> = ({name, containerStyle, ...rest}) => {
   const {
     control,
     formState: {errors},
@@ -31,9 +32,7 @@ const OTPInputField: FC<Props> = ({
   useEffect(() => {
     let unsubscribe: EmitterSubscription
     if (name) {
-      unsubscribe = Keyboard.addListener('keyboardDidHide', () =>
-        trigger(name)
-      )
+      unsubscribe = Keyboard.addListener('keyboardDidHide', () => trigger(name))
     }
     return () => unsubscribe?.remove()
   }, [name, trigger])
@@ -45,7 +44,9 @@ const OTPInputField: FC<Props> = ({
         name={name}
         render={({field: {value}}) => (
           <OTPInput
-            onCodeChanged={code => setValue(name, code, {shouldValidate: true})}
+            onCodeChanged={(code) =>
+              setValue(name, code, {shouldValidate: true})
+            }
             code={value as string}
             {...rest}
           />

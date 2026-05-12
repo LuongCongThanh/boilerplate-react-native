@@ -20,7 +20,6 @@ export const defaultLanguage =
   DEFAULT_LOCALE
 
 i18n.use(initReactI18next).init({
-  compatibilityJSON: 'v3',
   fallbackLng: defaultLanguage,
   resources: locales,
   interpolation: {

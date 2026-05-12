@@ -3,5 +3,5 @@ export enum SettingRoutes {
 }
 
 export type SettingStackParamList = {
-  [SettingRoutes.Profile]: any
+  [SettingRoutes.Profile]: undefined
 }

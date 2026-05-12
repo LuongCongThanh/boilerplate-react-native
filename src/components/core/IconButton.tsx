@@ -1,11 +1,11 @@
 import React from 'react'
 import Button, {Props as ButtonProps} from 'src/components/core/Button'
-import Icon, {Props as IconProps} from 'src/components/core/Icon'
+import Icon, {Props as IconProps, IconType} from 'src/components/core/Icon'
 
 export type Props = {
   icon?: JSX.Element
   iconProps?: IconProps
-  type?: string
+  type?: IconType
   size?: number
   name: string
   color?: string

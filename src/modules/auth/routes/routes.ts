@@ -1,5 +1,4 @@
 export enum AuthRoutes {
-  // auth
   SignIn = 'SignIn',
   SignUp = 'SignUp',
   ForgotPassword = 'ForgotPassword',
@@ -8,9 +7,9 @@ export enum AuthRoutes {
 }
 
 export type AuthStackParamList = {
-  [AuthRoutes.SignIn]: any
-  [AuthRoutes.SignUp]: any
-  [AuthRoutes.ForgotPassword]: any
-  [AuthRoutes.VerifyOTP]: any
-  [AuthRoutes.CreateNewPassword]: any
+  [AuthRoutes.SignIn]: undefined
+  [AuthRoutes.SignUp]: undefined
+  [AuthRoutes.ForgotPassword]: undefined
+  [AuthRoutes.VerifyOTP]: undefined
+  [AuthRoutes.CreateNewPassword]: undefined
 }

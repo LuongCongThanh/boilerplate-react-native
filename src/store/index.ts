@@ -13,11 +13,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {authReducer} from 'src/modules/auth/store'
 import commonReducer from './slice/common'
+import {errorMiddleware} from './middleware/errorMiddleware'
 
 const rootPersistConfig = {
   key: 'root',
+  version: 1,
   storage: AsyncStorage,
-  debug: true
+  whitelist: ['auth'],
+  debug: __DEV__
 }
 
 const rootReducer = combineReducers({
@@ -34,7 +37,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    })
+    }).concat(errorMiddleware)
 })
 
 export const persistor = persistStore(store)
