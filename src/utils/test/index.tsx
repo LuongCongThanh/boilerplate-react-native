@@ -2,14 +2,17 @@ import {render, RenderAPI} from '@testing-library/react-native'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import {thunk} from 'redux-thunk'
 import {ReactTestRendererJSON} from 'react-test-renderer'
 import {RootState} from 'src/store'
 
 /**
  * backward compatibility for "baseElement" prop because it is deleted in the latest @testing-library/react-native
  */
-const customRender = (ui: React.ReactElement, options: Record<string, unknown> = {}) => {
+const customRender = (
+  ui: React.ReactElement,
+  options: Record<string, unknown> = {}
+) => {
   const renderProp = render(ui, {...options})
 
   return new Proxy(renderProp, {
@@ -36,7 +39,9 @@ export const renderWithStore = (
   state: Partial<RootState>,
   options = {}
 ) => {
-  const mockStore = configureMockStore([thunk])
+  // redux-mock-store uses legacy AnyAction types, incompatible with redux 5 / RTK 2
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const mockStore = configureMockStore([thunk as any])
 
   const customProviders = ({children}: {children: JSX.Element}) => {
     const store = mockStore(state)
