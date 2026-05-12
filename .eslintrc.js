@@ -62,7 +62,45 @@ module.exports = {
     'jest/no-disabled-tests': 'warn',
     'jest/no-identical-title': 'error',
     'jest/valid-expect': 'error',
-    'jest/expect-expect': 'off'
+    'jest/expect-expect': 'off',
+    // no any
+    '@typescript-eslint/no-explicit-any': 'error',
+    // import order: external → src/ internal → relative
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index'
+        ],
+        pathGroups: [
+          {
+            pattern: 'src/**',
+            group: 'internal'
+          }
+        ],
+        pathGroupsExcludedImportTypes: ['builtin'],
+        'newlines-between': 'always'
+      }
+    ],
+    // no cross-module imports
+    'import/no-restricted-paths': [
+      'error',
+      {
+        zones: [
+          {target: './src/modules/auth', from: './src/modules/main'},
+          {target: './src/modules/auth', from: './src/modules/setting'},
+          {target: './src/modules/main', from: './src/modules/auth'},
+          {target: './src/modules/main', from: './src/modules/setting'},
+          {target: './src/modules/setting', from: './src/modules/auth'},
+          {target: './src/modules/setting', from: './src/modules/main'}
+        ]
+      }
+    ]
   },
   ignorePatterns: ['coverage/', '.eslintrc.js']
 }
